@@ -39,10 +39,10 @@ namespace GeolocatorService
 	/// <summary>
 	/// Occurs when the user location changes.
 	/// </summary>
-	public delegate void LocationChangedEventHandler(object sender, LocationChangedEventArgs property);
+	public delegate void LocationChangedEventHandler(object sender, LocationChangedEventArgs eventArgs);
 
 	/// <summary>
 	/// Occurs when the location permission changes (granted or denied)
 	/// </summary>
-	public delegate void LocationPermissionChangedEventHandler(object sender, LocationPermissionChangedEventArgs property);
+	public delegate void LocationPermissionChangedEventHandler(object sender, LocationPermissionChangedEventArgs eventArgs);
 }

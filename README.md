@@ -1,4 +1,4 @@
-# GeolocatorService
+﻿# GeolocatorService
 
 A service to get the user's current location, based on Geolocator, suited to UWP or [Uno](https://platform.uno/) apps.
 
@@ -23,7 +23,7 @@ Add the Location capability in your manifest.
 Add the NSLocationWhenInUsageDescription and NSLocationUsageDescription values to your info.plist file. This is the message that is displayed to your user when the permission for their location is requested. For instance,
 
 ```
-<key>NSLocationWhenInUsageDescription</key>
+<key>NSLocationWhenInUseUsageDescription</key>
 <string>TODO NSLocationWhenInUsageDescription</string>
 <key>NSLocationUsageDescription</key>
 <string>TODO NSLocationUsageDescription</string>
