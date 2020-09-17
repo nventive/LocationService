@@ -12,7 +12,8 @@ namespace GeolocatorService.Samples
 	{
 		private CoreDispatcher _dispatcher;
 		private IGeolocatorService _geolocatorService;
-		private IDisposable _subscription = null;
+		private IDisposable _locationOrNullSubscription = null;
+		private IDisposable _permissionSubscription = null;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -48,10 +49,36 @@ namespace GeolocatorService.Samples
 			}
 		}
 
+		private string _permissionStatus = "";
+		public string PermissionStatus
+		{
+			get => _permissionStatus;
+			set
+			{
+				_permissionStatus = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PermissionStatus)));
+			}
+		}
+
+		private void SetPermissionStatus(string content)
+		{
+			if (_dispatcher.HasThreadAccess)
+			{
+				PermissionStatus = content;
+			}
+			else
+			{
+				_ = _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+				{
+					SetPermissionStatus(content);
+				});
+			}
+		}
+
 		public DelegateCommand RequestPermissionCommand => new DelegateCommand(() =>
 		{
-			_subscription = _geolocatorService.
-				GetAndObserveLocationOrDefault()
+			_locationOrNullSubscription = _geolocatorService
+				.GetAndObserveLocationOrDefault()
 				.Subscribe(
 					location =>
 					{
@@ -69,6 +96,39 @@ namespace GeolocatorService.Samples
 						SetPageContent($"An error has occurred: {error}");
 					}
 				);
+
+			_permissionSubscription = _geolocatorService
+				.GetAndObserveIsPermissionGranted()
+				.Subscribe(
+					isGranted =>
+					{
+						if (isGranted)
+						{
+							SetPermissionStatus("Permission: Granted");
+						}
+						else
+						{
+							SetPermissionStatus($"Permission: Denied");
+						}
+					},
+					error =>
+					{
+						SetPermissionStatus($"An error has occurred: {error}");
+					}
+				);
+		});
+
+		public DelegateCommand GetLocationCommand => new DelegateCommand(async () =>
+		{
+			try
+			{
+				var location = await _geolocatorService.GetLocation(CancellationToken.None);
+				SetPageContent($"GetLocation- ({location.Point.Position.Longitude}, {location.Point.Position.Latitude})");
+			}
+			catch(Exception ex)
+			{
+				SetPageContent($"GetLocation- An error has occurred : {ex}");
+			}
 		});
 
 		public class DelegateCommand : ICommand
