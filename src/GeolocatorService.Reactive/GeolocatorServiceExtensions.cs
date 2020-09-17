@@ -14,11 +14,11 @@ namespace GeolocatorService
 		/// </summary>
 		public static IObservable<Geocoordinate> ObserveLocation(this IGeolocatorService service)
 		{
-			return Observable.FromEvent<LocationChangedEventHandler, LocationChangedEventArgs>(
+			return Observable.FromEventPattern<LocationChangedEventHandler, LocationChangedEventArgs> (
 				h => service.LocationChanged += h,
 				h => service.LocationChanged -= h
 			)
-			.Select(p => p.Coordinate);
+			.Select(p => p.EventArgs.Coordinate);
 		}
 
 		/// <summary>
@@ -48,11 +48,11 @@ namespace GeolocatorService
 		/// </summary>
 		public static IObservable<bool> ObserveIsPermissionGranted(this IGeolocatorService service)
 		{
-			return Observable.FromEvent<LocationPermissionChangedEventHandler, LocationPermissionChangedEventArgs>(
+			return Observable.FromEventPattern<LocationPermissionChangedEventHandler, LocationPermissionChangedEventArgs>(
 				h => service.LocationPermissionChanged += h,
 				h => service.LocationPermissionChanged -= h
 			)
-			.Select(p => p.IsLocationPermissionGranted);
+			.Select(p => p.EventArgs.IsLocationPermissionGranted);
 		}
 
 		/// <summary>

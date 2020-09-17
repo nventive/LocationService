@@ -4,11 +4,11 @@
     <TargetFrameworks>uap10.0.16299;netstandard2.0;xamarinios10;xamarinmac20;MonoAndroid90;monoandroid10.0</TargetFrameworks>
     <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <RootNamespace>GeolocatorService</RootNamespace>
+    <RootNamespace>GeolocatorService.Reactive</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reactive.Interfaces" Version="4.4.1" />
-    <PackageReference Include="Uno.UI" Version="3.1.0-dev.338" />
+    <PackageReference Include="Uno.UI" Version="3.1.0-dev.343" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
