@@ -7,12 +7,18 @@
 	  mc:Ignorable="d">
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<StackPanel Margin="0,40,0,0">
+		<StackPanel Margin="0,40,0,0"
+					Spacing="20">
 
 			<Button Content="Request permission"
 					Command="{Binding RequestPermissionCommand}" />
 
 			<TextBlock Text="{Binding PageContent}" />
+			
+			<Button Content="Get location"
+					Command="{Binding GetLocation}" />
+
+			<TextBlock Text="{Binding PermissionStatus}" />
 		</StackPanel>
 	</Grid>
 </Page>

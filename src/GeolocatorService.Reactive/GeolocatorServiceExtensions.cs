@@ -58,11 +58,17 @@ namespace GeolocatorService
 		/// <summary>
 		/// Gets and observes the location permission. Requests the permission if this was not already done.
 		/// </summary>
-		public static async Task<IObservable<bool>> GetAndObserveIsPermissionGranted(this IGeolocatorService service, CancellationToken ct)
+		public static IObservable<bool> GetAndObserveIsPermissionGranted(this IGeolocatorService service)
+		{
+			var initialPermission = Observable.Create<bool>(service.GetInitialPermission);
+
+			return ObserveIsPermissionGranted(service).Merge(initialPermission);
+		}
+
+		private static async Task GetInitialPermission(this IGeolocatorService service, IObserver<bool> observer, CancellationToken ct)
 		{
 			var isPermissionGranted = await service.RequestPermission(ct);
-
-			return ObserveIsPermissionGranted(service).StartWith(isPermissionGranted);
+			observer.OnNext(isPermissionGranted);
 		}
 	}
 }
